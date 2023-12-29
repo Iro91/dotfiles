@@ -1,0 +1,55 @@
+#!/bin/bash -e
+
+function Usage() {
+    cat <<EOF
+NAME
+$(basename $0) Generates script files ready for execution
+By default, the generated script name will be set to 'run.sh'
+
+DESCRIPTION
+  -h: Prints this usage
+  -e: Edit this script
+  -b: Basic - Generates a short complete script [default]
+  -r: Root  - Generates a script that requires root to run
+  -l: Log   - Generates a script that will generate logs when run
+  -v: Print script execution information
+EOF
+    exit 0
+}
+
+TEMPLATE_DIR=$HOME/.config/mkrun
+TEMPLATE=$TEMPLATE_DIR/run.sh
+VERBOSE="false"
+: ${EDITOR:=vim}
+
+while getopts "hveblr" opt; do
+    case $opt in
+    h) Usage ;;
+    v) VERBOSE="true" ;;
+    b) TEMPLATE=$TEMPLATE_DIR/run.sh ;;
+    l) TEMPLATE=$TEMPLATE_DIR/run_logging.sh ;;
+    r) TEMPLATE=$TEMPLATE_DIR/run_root.sh ;;
+    e)
+        $EDITOR "$0"
+        exit 0
+        ;;
+    \?)
+        echo "Invalid option: -$OPTARG" >&2
+        exit 1
+        ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ $VERBOSE == "true" ]; then
+    set -x
+fi
+
+GENERATED_SCRIPT=run.sh
+[ $# -ne 0 ] && GENERATED_SCRIPT=$1
+[ -x $GENERATED_SCRIPT ] && $EDITOR $GENERATED_SCRIPT && exit 0
+
+# We use cat rather than copy in case we have weird permissiosn on our script
+cat $TEMPLATE >$GENERATED_SCRIPT
+chmod +x $GENERATED_SCRIPT
+$EDITOR $GENERATED_SCRIPT

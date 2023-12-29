@@ -1,0 +1,53 @@
+#!/bin/bash
+set -e
+
+_USAGE=$(cat << EOF
+General info
+  -h --help:    Prints this usage
+  -v --verbose: Enables script logging
+  -e --edit:    Edit this script
+EOF
+)
+
+THIS_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+DIR_TEMPLATE="${HOME}/.config/create_bench"
+VERBOSE="false"
+
+PARAMS=""
+while (( "$#" )); do
+  case "$1" in
+    -h|--help)
+      echo "${_USAGE}"
+      exit 0
+      ;;
+    -v|--verbose)
+      VERBOSE="true"
+      ;;
+    -*|--*=) # unsupported flags
+      echo "Error: Unsupported flag $1" >&2
+      exit 1
+      ;;
+    *) # preserve positional arguments
+      PARAMS="$PARAMS $1"
+      ;;
+  esac
+  shift
+done
+# set positional arguments in their proper place
+eval set -- "${PARAMS}"
+
+if [ $# -ne 1 ]; then
+  >&2 echo "ERROR: Script requires a directory name to create"
+  exit 1
+fi
+
+if [ -d "${1}" ]; then
+  >&2 echo "ERROR: ${1} Already Exists"
+  exit 1
+fi
+
+cp -rL "$DIR_TEMPLATE" "${1}"
+chmod +w ${1}/*
+echo "${1} Created and prepped for build"
+
+gvim "${1}/main.cpp"
