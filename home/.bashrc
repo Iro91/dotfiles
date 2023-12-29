@@ -48,7 +48,7 @@ bind 'set bell-style visible'
 # ----------------------------------------------------------------------------
 
 # Global exports
-export EDITOR=vim
+export EDITOR=nvim
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # ----------------------------------------------------------------------------
@@ -237,5 +237,6 @@ fi
 
 # Enable bash fuzzy finding if available
 if [ -f ~/.fzf.bash ]; then
+    source ~/.fzf.bash
     export FZF_DEFAULT_OPTS="--height 20% --reverse --border"
 fi

@@ -1,5 +1,5 @@
 return {
-    "ThePrimagen/harpoon",
+    "ThePrimeagen/harpoon",
     dependencies = {
         "nvim-lua/plenary.nvim"
     },
