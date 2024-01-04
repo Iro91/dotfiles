@@ -2,14 +2,16 @@
 list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9']
 
 [:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
-background-color='rgb(46,52,54)'
-background-transparency-percent=5
+background-color='rgb(26,27,38)'
+background-transparency-percent=10
 bold-color-same-as-fg=false
 bold-is-bright=true
-font='FiraMono Nerd Font 12'
-foreground-color='rgb(211,215,207)'
-palette=['rgb(51,51,51)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(136,128,124)', 'rgb(241,93,34)', 'rgb(115,196,143)', 'rgb(255,206,81)', 'rgb(72,185,199)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']
-use-theme-colors=true
+cursor-colors-set=true
+font='FiraMono Nerd Font 10'
+foreground-color='rgb(169,177,214)'
+highlight-colors-set=true
+palette=['rgb(50,52,65)', 'rgb(247,118,142)', 'rgb(158,206,106)', 'rgb(224,175,104)', 'rgb(122,162,247)', 'rgb(173,142,230)', 'rgb(68,157,171)', 'rgb(120,124,153)', 'rgb(68,75,106)', 'rgb(255,122,147)', 'rgb(185,242,124)', 'rgb(255,158,100)', 'rgb(125,166,255)', 'rgb(187,154,247)', 'rgb(13,185,215)', 'rgb(172,176,208)']
+use-theme-colors=false
 use-theme-transparency=false
 use-transparent-background=true
-visible-name='TokyoNight'
+visible-name='tnight'
