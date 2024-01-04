@@ -42,7 +42,8 @@ fi
 
 # Colored shell prompt
 #PS1='\[[iro:\w]\$\[\033[0m\] '
-PS1='\[\033[1;32m\][iro:\w]\$\[\033[0m\] '
+#PS1='\[\033[1;32m\][iro:\w]\$\[\033[0m\] '
+eval "$(starship init bash)"
 
 bind 'set bell-style visible'
 

@@ -134,6 +134,14 @@ function PostConfigurations() {
     # color scheme
     dconf load /org/gnome/terminal/legacy/profiles:/ < "$HOME/.config/gnome-terminal/tokyonight-profile.dconf"
 
+    # Setup startship, this will give you a spicy prompt confiugration
+    if command -v starship &> /dev/null;  then
+    local starship_install=/tmp/startship_install.sh
+        curl -sS https://starship.rs/install.sh > "$starship_install"
+        chmod +x "$starship_install"
+        "$starship_install" -f
+    fi
+        
     # Finally load up our profile and load our bash configuration
     source "$HOME/.bashrc"
 }
