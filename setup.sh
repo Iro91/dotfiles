@@ -102,6 +102,9 @@ function NonStandardInstalls() {
         curl --create-dirs -LO --output-dir /tmp/ "$link"
         mkdir -p "$fira_dir"
         unzip /tmp/FiraMono.zip -d "$fira_dir"
+
+        # Force gnome to recognize that a new font is in town
+        fc-cache reload
     fi
 
     # Bat has a name collision with another app. It will be installed as "batcat"
@@ -135,7 +138,7 @@ function PostConfigurations() {
     dconf load /org/gnome/terminal/legacy/profiles:/ < "$HOME/.config/gnome-terminal/tokyonight-profile.dconf"
 
     # Setup startship, this will give you a spicy prompt confiugration
-    if command -v starship &> /dev/null;  then
+    if ! command -v starship &> /dev/null;  then
     local starship_install=/tmp/startship_install.sh
         curl -sS https://starship.rs/install.sh > "$starship_install"
         chmod +x "$starship_install"
