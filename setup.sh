@@ -130,6 +130,10 @@ function PostConfigurations() {
         "$tmux_tpm"/bin/install_plugins
     fi
 
+    # This will update our gnome profile to set the proper fonts and the tokynight
+    # color scheme
+    dconf load /org/gnome/terminal/legacy/profiles:/ < "$HOME/.config/gnome-terminal/tokyonight-profile.dconf"
+
     # Finally load up our profile and load our bash configuration
     source "$HOME/.bashrc"
 }
