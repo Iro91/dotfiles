@@ -13,11 +13,11 @@ return {
         })
 
         -- Always open in exploded view
-        local api = require("nvim-tree.api")
-        local Event = api.events.Event
-        api.events.subscribe(Event.TreeOpen, function()
-            api.tree.expand_all()
-        end)
+        --local api = require("nvim-tree.api")
+        --local Event = api.events.Event
+        --api.events.subscribe(Event.TreeOpen, function()
+        --    api.tree.expand_all()
+        --end)
 
         -- Key remapping to show view tree
         vim.keymap.set('n', '<C-n>', ':NvimTreeToggle<CR>', {})
