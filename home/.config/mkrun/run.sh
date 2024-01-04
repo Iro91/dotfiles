@@ -7,7 +7,7 @@ VERBOSE="false"
 function Usage() {
     cat <<EOF
 NAME
-$(basename $0) Rough Description
+$(basename "$0") Rough Description
 
 DESCRIPTION
     Detailed description
@@ -15,6 +15,11 @@ DESCRIPTION
     -v  : Enable verbosity
 EOF
     exit 0
+}
+
+#-------------------------------------------------------------------------------
+function Main() {
+    [[ $VERBOSE == "true" ]] && set -x
 }
 
 #-------------------------------------------------------------------------------
@@ -31,9 +36,5 @@ done
 shift $((OPTIND - 1))
 
 #-------------------------------------------------------------------------------
-function Main() {
-    [[ $VERBOSE == "true" ]] && set -x
-}
-
-Main
+Main "${@}"
 

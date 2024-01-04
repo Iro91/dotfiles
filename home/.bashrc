@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # ----------------------------------------------------------------------------
 # Behavior
 # ----------------------------------------------------------------------------
@@ -39,6 +41,7 @@ if ! shopt -oq posix; then
 fi
 
 # Colored shell prompt
+#PS1='\[[iro:\w]\$\[\033[0m\] '
 PS1='\[\033[1;32m\][iro:\w]\$\[\033[0m\] '
 
 bind 'set bell-style visible'
@@ -67,6 +70,7 @@ alias 2.='cd ../../ '
 alias 3.='cd ../../../ '
 alias path='echo $PATH'
 alias rp='. $HOME/.bashrc'
+alias cat='bat'
 
 # cd and show me directories
 function cd() { builtin cd "$@" && lsd; }
@@ -79,7 +83,7 @@ function fh() { find -maxdepth 1 -iname "*$@*"; }
 # Look in all files recursively except for binaries for this string
 function gf() { grep -irIns "$@" *; }
 # Look in this dir for all files except for binaries for this string
-function gh() { grep -iIns "$@" *; }
+function gl() { grep -iIns "$@" *; }
 
 # ----------------------------------------------------------------------------
 # Tools
@@ -217,6 +221,7 @@ fi
 # ----------------------------------------------------------------------------
 alias ep='e $HOME/.bashrc'
 alias ev='e $HOME/.vimrc'
+alias dot='cd $HOME/dev/dotfiles && e .'
 
 # ----------------------------------------------------------------------------
 # Bookmarks

@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/bin/bash -e
 
-set -e
-
-LOG_FILE="/var/tmp/logs/$(basename "$0")_$(date "+%Y%m%d%H%m%S")"
-LOGGING="false"
+#-------------------------------------------------------------------------------
 VERBOSE="false"
+LOGGING="false"
+THIS_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+LOG_FILE="$THIS_DIR/$(basename "$0")_$(date "+%Y%m%d_%H%m%S").log"
 
 #-------------------------------------------------------------------------------
 function Usage() {
     cat <<EOF
 NAME
-$(basename $0) Rough Description
+$(basename "$0") Rough Description
 
 DESCRIPTION
     -h: Prints this usage
@@ -18,6 +18,7 @@ DESCRIPTION
     -e: Edit this script
     -l: Enables script logging
 EOF
+    exit 0
 }
 
 #-------------------------------------------------------------------------------
@@ -26,10 +27,10 @@ function Main() {
 }
 
 #-------------------------------------------------------------------------------
-while getopts "hvel" opt; do
+while getopts "hvl" opt; do
     case $opt in
     h) Usage ;;
-    v) set -x ;;
+    v) VERBOSE="true" ;;
     l) LOGGING="true" ;;
     \?)
         echo "Invalid option: -$OPTARG" >&2
@@ -42,10 +43,10 @@ shift $((OPTIND - 1))
 #-------------------------------------------------------------------------------
 if [ $LOGGING == "true" ]; then
     echo "Script logs will be stored in $LOG_FILE"
-    mkdir -p $(dirname "$LOG_FILE")
+    mkdir -p "$(dirname "$LOG_FILE")"
 
-    Main 2>&1 | tee $LOG_FILE
+    Main "${@}" 2>&1 | tee "$LOG_FILE"
 else
-    Main
+    Main "${@}"
 fi
 

@@ -1,0 +1,21 @@
+window:
+  padding:
+    x: 0
+    y: 0
+  class:
+    instance: Alacritty
+    general: Alacritty
+  opacity: 1
+
+scrolling:
+  history: 10000
+  multiplier: 4
+
+font:
+  normal:
+    family: FiraMono Nerd Font Mono
+    style: Regular
+  size: 12
+
+import:
+  - ~/.config/alacritty/themes/tokyo-night.yml

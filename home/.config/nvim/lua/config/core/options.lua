@@ -1,35 +1,45 @@
-vim.opt.showcmd = true
-vim.opt.belloff = all
+local opt = vim.opt
 
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+opt.showcmd = true
+opt.belloff = all
 
-vim.opt.number = true
-vim.opt.relativenumber = true
-vim.opt.ruler = true
+-- tabs & indentation
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.shiftwidth = 4
+opt.expandtab = true -- turn tabs to spaces
+opt.autoindent = true -- copy expected indent
+opt.smartindent = true
 
-vim.opt.showmatch = true
-vim.opt.wildmenu = true
-vim.opt.smartcase = true
-vim.opt.startofline = nostartofline
-vim.opt.autoread = true
+-- line lengths
+opt.number = true
+opt.relativenumber = true
+opt.signcolumn = "yes:1"
+opt.wrap = false
+opt.colorcolumn = "80"
+opt.ruler = true
 
-vim.opt.smartindent = true
+-- searching & file reads
+opt.showmatch = true
+opt.wildmenu = true
+opt.ignorecase = true
+opt.smartcase = true -- To take effect ignore case MUST be true
+opt.startofline = nostartofline
+opt.autoread = true
+opt.hlsearch = true
+opt.incsearch = true
 
-vim.opt.wrap = false
+-- vim history
+opt.swapfile = false
+opt.backup = false
+opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+opt.undofile = true
 
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
-vim.opt.undofile = true
+-- terminal behavior
+opt.termguicolors = true
+opt.background = "dark" -- force colorschemes to be dark if possible
+opt.termguicolors = true
+opt.scrolloff = 8
+opt.updatetime = 50
 
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
-
-vim.opt.termguicolors = true
-
-vim.opt.scrolloff = 8
-vim.opt.updatetime = 50
-vim.opt.colorcolumn = "80"
+opt.clipboard:append("unnamedplus") -- use system clipboard

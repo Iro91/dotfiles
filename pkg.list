@@ -1,10 +1,15 @@
 # Ubuntu packages
+alacritty
+bat
 git
 htop
 i3
 make
 meld
+plocate
+shellcheck
 ssh
 stow
 tmux
 vim
+xterm

@@ -1,9 +1,16 @@
 #!/bin/bash -e
 
+#-------------------------------------------------------------------------------
+TEMPLATE_DIR=$HOME/.config/mkrun
+TEMPLATE=$TEMPLATE_DIR/run.sh
+VERBOSE="false"
+: "${EDITOR:=vim}"
+
+#-------------------------------------------------------------------------------
 function Usage() {
     cat <<EOF
 NAME
-$(basename $0) Generates script files ready for execution
+$(basename "$0") Generates script files ready for execution
 By default, the generated script name will be set to 'run.sh'
 
 DESCRIPTION
@@ -17,11 +24,7 @@ EOF
     exit 0
 }
 
-TEMPLATE_DIR=$HOME/.config/mkrun
-TEMPLATE=$TEMPLATE_DIR/run.sh
-VERBOSE="false"
-: ${EDITOR:=vim}
-
+#-------------------------------------------------------------------------------
 while getopts "hveblr" opt; do
     case $opt in
     h) Usage ;;
@@ -40,16 +43,21 @@ while getopts "hveblr" opt; do
     esac
 done
 shift $((OPTIND - 1))
+#
+#-------------------------------------------------------------------------------
+function Main() {
+    [[ $VERBOSE == "true" ]] && set -x
 
-if [ $VERBOSE == "true" ]; then
-    set -x
-fi
+    GENERATED_SCRIPT=run.sh
+    [ $# -ne 0 ] && GENERATED_SCRIPT=$1
+    [ -x "$GENERATED_SCRIPT" ] && "$EDITOR" "$GENERATED_SCRIPT" && exit 0
 
-GENERATED_SCRIPT=run.sh
-[ $# -ne 0 ] && GENERATED_SCRIPT=$1
-[ -x $GENERATED_SCRIPT ] && $EDITOR $GENERATED_SCRIPT && exit 0
+    # We use cat rather than copy in case we have weird permissiosn on our script
+    cat "$TEMPLATE" >"$GENERATED_SCRIPT"
+    chmod +x "$GENERATED_SCRIPT"
+    "$EDITOR" "$GENERATED_SCRIPT"
+}
 
-# We use cat rather than copy in case we have weird permissiosn on our script
-cat $TEMPLATE >$GENERATED_SCRIPT
-chmod +x $GENERATED_SCRIPT
-$EDITOR $GENERATED_SCRIPT
+Main "${@}"
+
+

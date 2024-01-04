@@ -1,53 +1,61 @@
-#!/bin/bash
-set -e
+#!/bin/bash -e
 
-_USAGE=$(cat << EOF
-General info
-  -h --help:    Prints this usage
-  -v --verbose: Enables script logging
-  -e --edit:    Edit this script
-EOF
-)
-
-THIS_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
-DIR_TEMPLATE="${HOME}/.config/create_bench"
+#-------------------------------------------------------------------------------
 VERBOSE="false"
+DIR_TEMPLATE="${HOME}/.config/create_bench"
+: "${EDITOR:=vim}"
 
-PARAMS=""
-while (( "$#" )); do
-  case "$1" in
-    -h|--help)
-      echo "${_USAGE}"
-      exit 0
-      ;;
-    -v|--verbose)
-      VERBOSE="true"
-      ;;
-    -*|--*=) # unsupported flags
-      echo "Error: Unsupported flag $1" >&2
+#-------------------------------------------------------------------------------
+function Usage() {
+    cat <<EOF
+NAME
+$(basename "$0") Rough Description
+
+DESCRIPTION
+    Detailed description
+    -h  : Print this usage
+    -v  : Enable verbosity
+EOF
+    exit 0
+}
+
+#-------------------------------------------------------------------------------
+function Main() {
+    [[ $VERBOSE == "true" ]] && set -x
+
+    if [ $# -ne 1 ]; then
+      echo "ERROR: Script requires a directory name to create" >&2
       exit 1
-      ;;
-    *) # preserve positional arguments
-      PARAMS="$PARAMS $1"
-      ;;
-  esac
-  shift
+    fi
+
+    local target="${1}"
+    if [ -d "$target" ]; then
+      echo "ERROR: ${1} Already Exists" >&2
+      exit 1
+    fi
+
+    cp -rL "$DIR_TEMPLATE" "${1}"
+    chmod +w "$target"/*
+    echo "${1} Created and prepped for build"
+
+    $EDITOR "${1}/main.cpp"
+}
+
+#-------------------------------------------------------------------------------
+while getopts "hv" opt; do
+    case $opt in
+    h) Usage ;;
+    v) VERBOSE="true" ;;
+    \?)
+        echo "Invalid option: -$OPTARG" >&2
+        exit 1
+        ;;
+    esac
 done
-# set positional arguments in their proper place
-eval set -- "${PARAMS}"
+shift $((OPTIND - 1))
 
-if [ $# -ne 1 ]; then
-  >&2 echo "ERROR: Script requires a directory name to create"
-  exit 1
-fi
 
-if [ -d "${1}" ]; then
-  >&2 echo "ERROR: ${1} Already Exists"
-  exit 1
-fi
+#-------------------------------------------------------------------------------
+Main "${@}"
 
-cp -rL "$DIR_TEMPLATE" "${1}"
-chmod +w ${1}/*
-echo "${1} Created and prepped for build"
 
-gvim "${1}/main.cpp"
