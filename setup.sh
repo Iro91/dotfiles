@@ -167,6 +167,9 @@ function Main() {
     NonStandardInstalls
 
     PostConfigurations
+
+    zenity --info --text="Environment succesfully configured. Please restart \
+gnome terminal to take effect"
 }
 
 #-------------------------------------------------------------------------------

@@ -238,7 +238,7 @@ function tb()  { cd $HOME/dev/testbench/bench/$@; }
 # 2. That we have tmux installed
 # 3. That we are not in a live tmux session
 if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
-    exec tmux
+    echo exec tmux
 fi
 
 # Enable bash fuzzy finding if available
