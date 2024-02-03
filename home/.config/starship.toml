@@ -1,3 +1,5 @@
+add_newline = false
+
 format = """
 $username\
 $hostname\
@@ -7,7 +9,6 @@ $git_state\
 $git_status\
 $git_metrics\
 $fill\
-$nodejs\
 $cmd_duration $jobs $time\
 $line_break\
 $character"""
