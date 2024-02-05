@@ -114,6 +114,17 @@ function NonStandardInstalls() {
         ln -sf "$bin" "$HOME/.local/bin/bat"
     fi
 
+    # Lazygit is great for managing git commands from within a terminal
+    if ! command -v lazygit; then
+        local version=""
+        version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+        local link="https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${version}_Linux_x86_64.tar.gz"
+        curl --create-dirs -LO --output-dir /tmp/ "$link"
+        curl -LO lazygit.tar.gz 
+        tar xf lazygit.tar.gz lazygit
+        sudo install lazygit /usr/local/bin
+    fi
+
 }
 
 # List of functions that come after our profile is in place. These might 
