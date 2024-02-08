@@ -64,6 +64,7 @@ alias ls="/bin/ls -F --color=auto"
 alias la='ls -F -a'
 alias la='ls -a'
 alias ll='ls -l'
+alias lm='ls -tr | tail -n 1'
 alias lsd='/bin/ls -d --color */ 2>/dev/null || true'
 alias grep='grep --color=auto'
 alias ..='cd ../'
