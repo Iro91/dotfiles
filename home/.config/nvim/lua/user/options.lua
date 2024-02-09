@@ -61,3 +61,7 @@ opt.termguicolors = true
 opt.scrolloff = 8
 
 opt.clipboard = "unnamed,unnamedplus" -- use system clipboard
+
+-- Disable netrw to support nvim-tree
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
