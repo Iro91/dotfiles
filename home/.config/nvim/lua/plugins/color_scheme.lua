@@ -9,7 +9,7 @@ return {
                 style = "night",
                 transparent = false
             })
-            -- vim.cmd.colorscheme 'tokyonight'
+            vim.cmd.colorscheme 'tokyonight'
         end,
     },
 
@@ -40,7 +40,7 @@ return {
 				},
 			})
 
-			vim.cmd.colorscheme("catppuccin-macchiato")
+			-- vim.cmd.colorscheme("catppuccin-macchiato")
 		end,
 	},
 

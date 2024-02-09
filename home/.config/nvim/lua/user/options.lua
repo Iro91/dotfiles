@@ -1,33 +1,54 @@
 local opt = vim.opt
 
+-- Enable relative line numbers
+opt.number = true
+opt.relativenumber = true
+
+-- Set tabs to spaces
+opt.tabstop = 4
+opt.softtabstop = 4
+opt.expandtab = true -- turn tabs to spaces
+
+-- Enable auto indenting and set it to spaces
+opt.smartindent = true
+opt.shiftwidth = 4
+opt.breakindent = true
+
+-- Enable incremental search
+opt.incsearch = true
+opt.hlsearch = true
+
+-- Enable ignore case for better searching
+opt.ignorecase = true
+opt.smartcase = true -- To take effect ignore case MUST be true
+
+-- Enable mouse mode
+opt.mouse = "a"
+--
+-- Better splitting
+opt.splitbelow = true
+opt.splitright = true
+
+-- Decrease how often vim checks for updates
+opt.updatetime = 50
+
+-- Disable word wrap
+opt.wrap = false
+
 opt.showcmd = true
 opt.belloff = all
 
--- tabs & indentation
-opt.tabstop = 4
-opt.softtabstop = 4
-opt.shiftwidth = 4
-opt.expandtab = true -- turn tabs to spaces
-opt.autoindent = true -- copy expected indent
-opt.smartindent = true
-
 -- line lengths
-opt.number = true
-opt.relativenumber = true
 opt.signcolumn = "yes:1"
-opt.wrap = false
 opt.colorcolumn = "80"
 opt.ruler = true
+opt.cursorline = true
 
 -- searching & file reads
 opt.showmatch = true
 opt.wildmenu = true
-opt.ignorecase = true
-opt.smartcase = true -- To take effect ignore case MUST be true
 opt.startofline = nostartofline
 opt.autoread = true
-opt.hlsearch = true
-opt.incsearch = true
 
 -- vim history
 opt.swapfile = false
@@ -37,9 +58,6 @@ opt.undofile = true
 
 -- terminal behavior
 opt.termguicolors = true
-opt.background = "dark" -- force colorschemes to be dark if possible
-opt.termguicolors = true
 opt.scrolloff = 8
-opt.updatetime = 50
 
-opt.clipboard:append("unnamedplus") -- use system clipboard
+opt.clipboard = "unnamed,unnamedplus" -- use system clipboard

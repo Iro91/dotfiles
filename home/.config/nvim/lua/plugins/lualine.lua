@@ -7,7 +7,6 @@ return {
 		event = "VeryLazy",
 		config = function()
 			local harpoon = require("harpoon.mark")
-
 			local function truncate_branch_name(branch)
 				if not branch or branch == "" then
 					return ""
@@ -24,7 +23,6 @@ return {
 				end
 
 				local current_mark = "—"
-
 				local mark_idx = harpoon.get_current_index()
 				if mark_idx ~= nil then
 					current_mark = tostring(mark_idx)
@@ -35,7 +33,8 @@ return {
 
 			require("lualine").setup({
 				options = {
-					theme = "catppuccin",
+					theme = "tokyonight",
+					icons_enabled = true,
 					globalstatus = true,
 					component_separators = { left = "", right = "" },
 					section_separators = { left = "█", right = "█" },
