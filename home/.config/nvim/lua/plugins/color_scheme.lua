@@ -1,5 +1,5 @@
 return {
-    --- tokynight configs
+    --- tokyonight configs
     {
         "folke/tokyonight.nvim",
         lazy = false,
@@ -7,7 +7,11 @@ return {
         config = function()
             require('tokyonight').setup({
                 style = "night",
-                transparent = false
+                transparent = vim.g.transparent_enabled,
+                styles = {
+                    sidebars = "transparent",
+                    floats = "transparent",
+                }
             })
             vim.cmd.colorscheme("tokyonight")
         end,
