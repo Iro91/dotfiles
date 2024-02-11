@@ -20,7 +20,7 @@ keymap.set('v', '<leader>y', '"+y')
 -- Save application with good old <C-S>
 keymap.set('n', '<C-S>', ':update<CR>', {silent = true})
 keymap.set('v', '<C-S>', '<C-C>:update<CR>', {silent = true})
-keymap.set('i', '<C-S>', '<C-O> <ESC>:update<CR>', {silent = true})
+keymap.set('i', '<C-S>', '<ESC>:update<CR>', {silent = true})
 
 -- Jump to beginning of line
 keymap.set('n', 'H', '^')
