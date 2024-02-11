@@ -70,7 +70,7 @@ return {
 				sources = {
 					-- formatting
 					null_ls.builtins.formatting.stylua,
-					null_ls.builtins.formatting.shellcheck,
+					null_ls.builtins.diagnostics.shellcheck,
 				},
 			})
 
@@ -78,14 +78,14 @@ return {
 			--local map_lsp_keybinds = require("user.keymaps").map_lsp_keybinds
 
 			-- Use neodev to configure lua_ls in nvim directories - must load before lspconfig
-			--require("neodev").setup()
+			require("neodev").setup()
 
             local lspconfig = require("lspconfig")
             --local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-            --lspconfig.lua_ls.setup({
+            lspconfig.lua_ls.setup({
             --    capabilities = capabilities
-            --})
+            })
 
             vim.keymap.set("n", "K", vim.lsp.buf.hover, {})
             vim.keymap.set("n", "<leader>gd", vim.lsp.buf.definition, {})
