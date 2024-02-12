@@ -35,6 +35,7 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
+                    "clangd",
                 }
             })
         end
@@ -73,6 +74,8 @@ return {
 					-- formatting
 					null_ls.builtins.formatting.stylua,
 					null_ls.builtins.diagnostics.shellcheck,
+
+					null_ls.builtins.diagnostics.clangd,
 				},
 			})
 
