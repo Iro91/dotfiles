@@ -1,3 +1,7 @@
+-- Set the leader key to space
+vim.g.mapleader = " "
+
+-- Lets not type vim.opt everywhere
 local opt = vim.opt
 
 -- Enable relative line numbers

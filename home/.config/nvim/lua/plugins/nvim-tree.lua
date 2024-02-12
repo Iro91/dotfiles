@@ -58,9 +58,7 @@ return {
         })
 
         -- Key remapping to toggle view tree
-        vim.keymap.set('n', '<C-n>',  ':NvimTreeToggle<CR>', {})
-        vim.keymap.set('n', '<C-n>]', ':NvimTreeToggle<CR>', {})
-        vim.keymap.set('n', '<C-n>[', ':NvimTreeToggle<CR>', {})
+        vim.keymap.set('n', '<leader>tt',  ':NvimTreeToggle<CR>', {})
 
         -- Reset the nvim tree so that the tree will refresh
         local nt = require("nvim-tree.api")
@@ -71,12 +69,12 @@ return {
         end
 
         -- Open back to the root directory where vim was opened from
-        vim.keymap.set('n', '<C-n>r', function()
+        vim.keymap.set('n', '<leader>tr', function()
             openNvimTreeAtPath(vim.fn.getcwd())
         end, {})
 
         -- Open relative to wherever the current buffer was selected
-        vim.keymap.set('n', '<C-n>l', function()
+        vim.keymap.set('n', '<leader>tl', function()
             openNvimTreeAtPath(vim.fn.expand("%:p:h"))
         end, {})
     end

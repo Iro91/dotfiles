@@ -1,40 +1,48 @@
--- Set the leader key to space
-vim.g.mapleader = " "
+-- Use the old vim stype of vim mapping for easier reads
+local nnoremap = require("user.keymap_utils").nnoremap
+local vnoremap = require("user.keymap_utils").vnoremap
+local inoremap = require("user.keymap_utils").inoremap
+--local tnoremap = require("user.keymap_utils").tnoremap
+--local xnoremap = require("user.keymap_utils").xnoremap
 
-local keymap = vim.keymap
+-- Disable the space key as it's reserved by the leader key
+inoremap("<space>", "<nop>")
+nnoremap("<space>", "<nop>")
+vnoremap("<space>", "<nop>")
 
-keymap.set("n", "<leader>pv", vim.cmd.Ex)
+-- Escape insert mode using jk
+inoremap('jk', '<escape>')
 
--- Normal Mode Mappings
-keymap.set("n", "<leader>ex", vim.cmd.Ex)
-
--- Insert Mode Mappings
-keymap.set('i', 'jk', '<escape>')
-keymap.set('i', '<C-v>', '<ESC>"+pa')
+-- Paste using C-v
+inoremap('<C-v>', '<ESC>"+pa')
+nnoremap('<C-v>', '"+pa')
 
 -- Visual Mode Mappings
-keymap.set('n', '<leader>y', '"+Y')
-keymap.set('v', '<C-c>', '"+Y')
-keymap.set('v', '<leader>y', '"+y')
+-- Maybe we don't even need this
+nnoremap('<leader>y', '"+Y')
+vnoremap('<C-c>', '"+Y')
+vnoremap('<leader>y', '"+y')
 
 -- Save application with good old <C-S>
-keymap.set('n', '<C-S>', ':update<CR>', {silent = true})
-keymap.set('v', '<C-S>', '<C-C>:update<CR>', {silent = true})
-keymap.set('i', '<C-S>', '<ESC>:update<CR>', {silent = true})
+nnoremap('<C-S>', ':update<CR>', {silent = true})
+vnoremap('<C-S>', '<ESC>:update<CR>', {silent = true})
+inoremap('<C-S>', '<ESC>:update<CR>', {silent = true})
 
 -- Jump to beginning of line
-keymap.set('n', 'H', '^')
-keymap.set('v', 'H', '^')
+nnoremap('H', '^')
+vnoremap('H', '^')
 
 -- Jump to end of line
-keymap.set('n', 'L', '$')
-keymap.set('v', 'L', '$')
+nnoremap('L', '$')
+vnoremap('L', '$')
 
-keymap.set('n', '<leader><leader>', "<cmd>so<CR>")
-keymap.set('n', '<leader>c', "<cmd>nohlsearch<CR>")
+-- Press 'U' for redo
+nnoremap("U", "<C-r>")
+
+nnoremap('<leader>c', "<cmd>nohlsearch<CR>")
 
 -- Buffer maangement
-keymap.set('n', '<leader>h', ':bprev<CR>')
-keymap.set('n', '<leader>o', '<C-^>')
-keymap.set('n', '<leader>l', ':bnext<CR>')
+nnoremap('<leader>bh', ':bprev<CR>')
+nnoremap('<leader>bo', '<C-^>')
+nnoremap('<leader>bl', ':bnext<CR>')
 
