@@ -42,7 +42,8 @@ fi
 
 # Colored shell prompt
 #PS1='\[[iro:\w]\$\[\033[0m\] '
-PS1='\[\033[1;32m\][iro:\w]\$\[\033[0m\] '
+#PS1='\[\033[1;32m\][iro:\w]\$\[\033[0m\] '
+eval "$(starship init bash)"
 
 bind 'set bell-style visible'
 
@@ -63,6 +64,7 @@ alias ls="/bin/ls -F --color=auto"
 alias la='ls -F -a'
 alias la='ls -a'
 alias ll='ls -l'
+alias lm='ls -tr | tail -n 1'
 alias lsd='/bin/ls -d --color */ 2>/dev/null || true'
 alias grep='grep --color=auto'
 alias ..='cd ../'
@@ -202,9 +204,9 @@ function gits(){
 
 function gc(){
     if [[ $# -gt 0 ]]; then
-        git checkout ${@}
+        git checkout "${@}"
     else
-        git checkout $(gits)
+        git checkout "$(gits)"
     fi
 }
 
@@ -228,20 +230,23 @@ alias dot='cd $HOME/dev/dotfiles && e .'
 # ----------------------------------------------------------------------------
 function tb()  { cd $HOME/dev/testbench/bench/$@; }
 
+# Enable bash fuzzy finding if available
+if [ -f ~/.fzf.bash ]; then
+    source "$HOME/.fzf.bash"
+    export FZF_DEFAULT_OPTS="--height 20% --reverse --border"
+fi
+
 # ----------------------------------------------------------------------------
 # Kick off Tmux
 # ----------------------------------------------------------------------------
-
 # Starts our shell in a tmux session if the followingt are met:
 # 1. Check that we are intearactive
 # 2. That we have tmux installed
 # 3. That we are not in a live tmux session
 if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
-    exec tmux
-fi
-
-# Enable bash fuzzy finding if available
-if [ -f ~/.fzf.bash ]; then
-    source ~/.fzf.bash
-    export FZF_DEFAULT_OPTS="--height 20% --reverse --border"
+    if tmux has-session -t "main" &> /dev/null; then
+        exec tmux a -t "main"
+    else
+        exec tmux new -s "main"
+    fi
 fi

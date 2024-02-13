@@ -1,5 +1,4 @@
 # Ubuntu packages
-alacritty
 bat
 git
 htop
@@ -7,6 +6,7 @@ i3
 make
 meld
 plocate
+rename
 shellcheck
 ssh
 stow

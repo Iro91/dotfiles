@@ -102,6 +102,9 @@ function NonStandardInstalls() {
         curl --create-dirs -LO --output-dir /tmp/ "$link"
         mkdir -p "$fira_dir"
         unzip /tmp/FiraMono.zip -d "$fira_dir"
+
+        # Force gnome to recognize that a new font is in town
+        fc-cache reload
     fi
 
     # Bat has a name collision with another app. It will be installed as "batcat"
@@ -109,6 +112,18 @@ function NonStandardInstalls() {
     local bin=/usr/bin/batcat
     if [[ -x /usr/bin/batcat ]]; then
         ln -sf "$bin" "$HOME/.local/bin/bat"
+    fi
+
+    # Lazygit is great for managing git commands from within a terminal
+    if ! command -v lazygit; then
+        pushd /tmp
+        local version=""
+        version=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+        local link="https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${version}_Linux_x86_64.tar.gz"
+        curl -Lo lazygit.tar.gz "$link"
+        tar xf lazygit.tar.gz lazygit
+        sudo install lazygit /usr/local/bin
+        popd
     fi
 
 }
@@ -130,6 +145,18 @@ function PostConfigurations() {
         "$tmux_tpm"/bin/install_plugins
     fi
 
+    # This will update our gnome profile to set the proper fonts and the tokynight
+    # color scheme
+    dconf load /org/gnome/terminal/legacy/profiles:/ < "$HOME/.config/gnome-terminal/tokyonight-profile.dconf"
+
+    # Setup startship, this will give you a spicy prompt confiugration
+    if ! command -v starship &> /dev/null;  then
+    local starship_install=/tmp/startship_install.sh
+        curl -sS https://starship.rs/install.sh > "$starship_install"
+        chmod +x "$starship_install"
+        "$starship_install" -f
+    fi
+        
     # Finally load up our profile and load our bash configuration
     source "$HOME/.bashrc"
 }
@@ -152,6 +179,9 @@ function Main() {
     NonStandardInstalls
 
     PostConfigurations
+
+    zenity --info --text="Environment succesfully configured. Please restart \
+gnome terminal to take effect"
 }
 
 #-------------------------------------------------------------------------------
