@@ -72,7 +72,7 @@ alias 2.='cd ../../ '
 alias 3.='cd ../../../ '
 alias path='echo $PATH'
 alias rp='. $HOME/.bashrc'
-alias cat='bat'
+alias cat='bat --theme=base16-256'
 
 # cd and show me directories
 function cd() { builtin cd "$@" && lsd; }
@@ -199,12 +199,12 @@ function fj(){
 
 # Git search
 function gits(){
-    git branch | fzf
+    git branch | fzf | tr -d ' '
 }
 
 function gc(){
     if [[ $# -gt 0 ]]; then
-        git checkout "${@}"
+        git checkout "$1"
     else
         git checkout "$(gits)"
     fi
@@ -223,7 +223,8 @@ fi
 # ----------------------------------------------------------------------------
 alias ep='e $HOME/.bashrc'
 alias ev='e $HOME/.vimrc'
-alias dot='cd $HOME/dev/dotfiles && e .'
+alias dot='cd $HOME/dev/dotfiles/home/'
+alias nvc='cd $HOME/dev/dotfiles/home/.config/nvim'
 
 # ----------------------------------------------------------------------------
 # Bookmarks
