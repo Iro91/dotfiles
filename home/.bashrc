@@ -15,12 +15,16 @@ HISTCONTROL=ignoreboth
 
 # append to the history file, don't overwrite it
 shopt -s histappend
+# Enable vim motions
+set -o vi
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
 HISTFILESIZE=2000
 
 export FZF_DEFAULT_COMMAND='find .'
+export BAT_THEME='base16-256'
+export BAT_STYLE='numbers'
 
 # Allow application core dumps
 ulimit -c unlimited
@@ -72,20 +76,47 @@ alias 2.='cd ../../ '
 alias 3.='cd ../../../ '
 alias path='echo $PATH'
 alias rp='. $HOME/.bashrc'
-alias cat='bat --theme=base16-256'
+alias cat='bat'
 
 # cd and show me directories
 function cd() { builtin cd "$@" && lsd; }
 
 # Find anything that contains part of the string I provide
-function ff() { find -iname "*$@*" | sort | uniq; }
+#function ff() { find -iname "*$@*" | sort | uniq; }
+#function fh() { find -maxdepth 1 -iname "*$@*"; }
 # Find in current dir files that contain part of the string I provide
-function fh() { find -maxdepth 1 -iname "*$@*"; }
+
+function ff() {
+    local hits=""
+    if [ $# -ne 0 ]; then
+        hits="$(find . -iname "*$1*" | sort | uniq)"
+    else
+        #hits="$(find . -iname "*" | fzf --preview 'bat --style=numbers --color=always {}')"
+        hits="$(find . -iname "*" | fzf --preview 'bat {}')"
+    fi
+
+    if [ -n "$hits" ]; then
+        echo "$hits"
+        echo "$hits" | xclip -selection clipboard
+    fi
+}
+function fe() { $EDITOR "$(find . -iname "*" | fzf )" ; }
+
+function fcd() {
+    local hits=""
+    hits="$(find . -type d | fzf )"
+    [ -n "$hits" ] && cd "$hits"
+}
+
 
 # Look in all files recursively except for binaries for this string
-function gf() { grep -irIns "$@" *; }
+function gf() { grep -irIns -- "$@" *; }
 # Look in this dir for all files except for binaries for this string
-function gl() { grep -iIns "$@" *; }
+function gl() { grep -iIns -- "$@" *; }
+#function gf() {
+#    rg --line-number --no-heading --color=always --smart-case "$@" | fzf -d ':' -n 2.. --ansi --no-sort --preview-window 'down:20%:+{2}' --preview 'bat --style=numbers --color=always --highlight-line {2} {1}'
+#}
+
 
 # ----------------------------------------------------------------------------
 # Tools
@@ -234,7 +265,7 @@ function tb()  { cd $HOME/dev/testbench/bench/$@; }
 # Enable bash fuzzy finding if available
 if [ -f ~/.fzf.bash ]; then
     source "$HOME/.fzf.bash"
-    export FZF_DEFAULT_OPTS="--height 20% --reverse --border"
+    export FZF_DEFAULT_OPTS="--height 40% --reverse --border"
 fi
 
 # ----------------------------------------------------------------------------
