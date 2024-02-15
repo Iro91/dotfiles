@@ -57,6 +57,7 @@ bind 'set bell-style visible'
 
 # Global exports
 export EDITOR=nvim
+export TERMINAL=kitty
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # ----------------------------------------------------------------------------
@@ -85,9 +86,9 @@ function cd() { builtin cd "$@" && lsd; }
 function ff() {
     local hits=""
     if [ $# -ne 0 ]; then
-        hits="$(find . -iname "*$1*" | sort | uniq)"
+        hits="$(find . -type f -iname "*$1*" | sort | uniq)"
     else
-        hits="$(find . -iname "*" | fzf --preview 'bat {}')"
+        hits="$(find . -type f -iname "*" | fzf --preview 'bat {}')"
     fi
 
     if [ -n "$hits" ]; then
@@ -106,14 +107,18 @@ function fe() {
 # Find and jump to the target directory
 function fcd() {
     local hits=""
-    hits="$(find . -type d | fzf )"
+    if [ $# -ne 0 ]; then
+        hits="$(find . -type d -iname "*$1*" | sort | uniq)"
+    else
+        hits="$(find . -type d | fzf )"
+    fi
     [ -n "$hits" ] && { cd "$hits" || false; }
 }
 
 # Look in all files recursively except for binaries for this string
-function gf() { grep -irIns -- "$@" *; }
+function gf() { grep -irIns "$@" *; }
 # Look in this dir for all files except for binaries for this string
-function gl() { grep -iIns -- "$@" *; }
+function gl() { grep -iIns "$@" *; }
 #function gf() {
 #    rg --line-number --no-heading --color=always --smart-case "$@" | fzf -d ':' -n 2.. --ansi --no-sort --preview-window 'down:20%:+{2}' --preview 'bat --style=numbers --color=always --highlight-line {2} {1}'
 #}
