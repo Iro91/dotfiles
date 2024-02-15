@@ -5,8 +5,9 @@ set completion-ignore-case On
 $if mode=vi
     set keymap vi-command
     # normal mode
-    "H'": beginning-of-line
-    "L'": end-of-line
+    "H": beginning-of-line
+    "L": end-of-line
+    # Insert mode remaps
     set keymap vi-insert
     "jk": vi-movement-mode # remap escape
 $endif

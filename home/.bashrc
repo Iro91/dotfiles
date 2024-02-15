@@ -1,4 +1,4 @@
-#!/bin/bash
+# /bin/bash
 
 # ----------------------------------------------------------------------------
 # Behavior
@@ -64,7 +64,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 # ----------------------------------------------------------------------------
 alias cp='cp -iv'
 alias mv='mv -iv'
-alias ls="/bin/ls -F --color=auto"
+alias ls="/bin/ls -F -h --color=auto"
 alias la='ls -F -a'
 alias la='ls -a'
 alias ll='ls -l'
@@ -82,32 +82,33 @@ alias cat='bat'
 function cd() { builtin cd "$@" && lsd; }
 
 # Find anything that contains part of the string I provide
-#function ff() { find -iname "*$@*" | sort | uniq; }
-#function fh() { find -maxdepth 1 -iname "*$@*"; }
-# Find in current dir files that contain part of the string I provide
-
 function ff() {
     local hits=""
     if [ $# -ne 0 ]; then
         hits="$(find . -iname "*$1*" | sort | uniq)"
     else
-        #hits="$(find . -iname "*" | fzf --preview 'bat --style=numbers --color=always {}')"
         hits="$(find . -iname "*" | fzf --preview 'bat {}')"
     fi
 
     if [ -n "$hits" ]; then
-        echo "$hits"
-        echo "$hits" | xclip -selection clipboard
+        echo "$hits" | xclip -f -selection clipboard
     fi
 }
-function fe() { $EDITOR "$(find . -iname "*" | fzf )" ; }
 
+# find and open the target entry
+function fe() {
+    local hits=""
+    hits="$(ff "$@")"
+
+    [ -n "$hits" ] && $EDITOR "$hits"
+}
+
+# Find and jump to the target directory
 function fcd() {
     local hits=""
     hits="$(find . -type d | fzf )"
-    [ -n "$hits" ] && cd "$hits"
+    [ -n "$hits" ] && { cd "$hits" || false; }
 }
-
 
 # Look in all files recursively except for binaries for this string
 function gf() { grep -irIns -- "$@" *; }
