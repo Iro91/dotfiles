@@ -2,6 +2,9 @@
 
 #-------------------------------------------------------------------------------
 VERBOSE="false"
+LEFT_MONITOR=""
+MAIN_MONITOR=""
+RIGHT_MONITOR=""
 
 #-------------------------------------------------------------------------------
 function Usage() {
@@ -37,6 +40,18 @@ function Main() {
         i3-msg "workspace 5; exec zoom"
     fi
 }
+
+#-------------------------------------------------------------------------------
+#function DetectMinitors() {
+#    local monitors="1"
+#    monitors="$(xrandr | grep -wc "connected")"
+#    if [ "$monitors" -eq 3 ]; then
+#        echo "There are three monitors"
+#    elif [ "$monitors" -eq 2 ]; then
+#        echo "There are two monitors"
+#    else
+#    fi
+#}
 
 #-------------------------------------------------------------------------------
 while getopts "hv" opt; do

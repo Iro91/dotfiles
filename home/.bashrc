@@ -16,7 +16,7 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 # Enable vim motions
-set -o vi
+# set -o vi
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=1000
@@ -86,7 +86,7 @@ function cd() { builtin cd "$@" && lsd; }
 function ff() {
     local hits=""
     if [ $# -ne 0 ]; then
-        hits="$(find . -type f -iname "*$1*" | sort | uniq)"
+        hits="$(find . -iname "*$1*" | sort | uniq)"
     else
         hits="$(find . -type f -iname "*" | fzf --preview 'bat {}')"
     fi
@@ -182,56 +182,6 @@ function t()
     fi
 
     xterm -fa mono:size=12 -bg black $args & disown
-}
-
-# Find and jump to target
-# 
-# Does a dirty search for a filename that matches the input expression
-# If a matching file is found we present a list of matching directories that
-# the user can select and then cd into
-function fj(){
-    if [ $# -ne 1 ]; then
-        echo "ERROR: Single target required: $@" >&2
-        return 1
-    fi
-
-    # Find matches and store them in an array
-    mapfile -t matches < <(find . -iname "*$1*" | sort)
-    if [ ${#matches[@]} -eq 0 ]; then
-        echo "ERROR: No targets found" >&2
-        return 0
-    fi
-
-    for match in ${matches[@]}; do
-        echo $match
-    done
-
-    # Get the unique directories of the found files
-    mapfile -t dir_list < <(for match in "${matches[@]}"; do dirname "$(realpath "$match")"; done | sort | uniq)
-
-    local count=0
-    for target in ${dir_list[@]}; do
-        echo "[$count] $target"
-        count=$((count + 1))
-    done
-
-    # If we only have one entry jump immediately to the target
-    if [ ${#dir_list[@]} -eq 1 ]; then
-        echo "jmp ${dir_list[0]}"
-        cd ${dir_list[0]}
-        return 0
-    fi
-
-    read -p "Select target: " selected
-
-    # Validate the input and display the corresponding entry
-    if [[ $selected =~ ^[0-9]+$ ]] && [ $selected -ge 0 ] && [ $selected -lt $count ]; then
-        echo "jmp $selected: ${dir_list[$selected]}"
-        cd ${dir_list[$selected]}
-    else
-        echo "ERROR: Invalid target: $selected" >&2
-        return 1
-    fi
 }
 
 # Git search

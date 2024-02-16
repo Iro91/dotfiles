@@ -187,4 +187,4 @@ bar {
         status_command i3status
 }
 
-exec_always --no-startup-id ~/.config/i3/i3-startup.sh
+exec_always --no-startup-id ~/.i3/i3_startup.sh
