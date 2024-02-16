@@ -28,16 +28,20 @@ function Main() {
     # Web browser for fun stuff
     i3-msg "workspace 1; exec firefox"
     # Web browser for work resarch
-    i3-msg "workspace 2; exec firefox"
+     i3-msg "workspace 2; exec firefox"
     # Open up a terminal
     i3-msg "workspace 3; exec i3-sensible-terminal"
 
     # The below are work specific and may or may not be on a given system
-    if command -v slack &> /dev/null; then
-        i3-msg "workspace 4; exec slack"
-    fi
-    if command -v zoom &> /dev/null; then
-        i3-msg "workspace 5; exec zoom"
+    SpawnApp 4 slack
+    SpawnApp 5 zoom
+}
+
+function SpawnApp() {
+    local ws=$1
+    local app=$2
+    if command -v "$app" &> /dev/null; then
+        i3-msg "workspace $ws; exec $app"
     fi
 }
 
