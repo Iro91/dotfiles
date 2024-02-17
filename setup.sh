@@ -128,15 +128,16 @@ function NonStandardInstalls() {
 
     # Install i3 with the gaps
     if ! command -v i3 &> /dev/null; then
+        sudo apt-get -y install i3
         local link="http://ftp.us.debian.org/debian/pool/main/i/i3-wm/i3-wm_4.23-1_amd64.deb"
         local pkg="/tmp/i3-wm.deb"
         curl -o "$pkg" "$link"
-        dpkg -i "$pkg"
+        sudo dpkg -i "$pkg"
 
         link="http://ftp.us.debian.org/debian/pool/main/i/i3-wm/i3_4.23-1_amd64.deb"
         pkg="/tmp/i3.deb"
         curl -o "$pkg" "$link"
-        dpkg -i "$pkg"
+        sudo dpkg -i "$pkg"
     fi
 
 }
@@ -175,6 +176,14 @@ function PostConfigurations() {
 }
 
 #-------------------------------------------------------------------------------
+function FixXorg() {
+    local xorg="/etc/X11/xorg.conf.d"
+    mkdir -p "$xorg"
+
+    sudo cp -r ./xorg/* "$xorg/."
+}
+
+#-------------------------------------------------------------------------------
 function Main() {
     [[ $VERBOSE == "true" ]] && set -x
 
@@ -190,8 +199,8 @@ function Main() {
     PreConfigure
     InstallPackages
     NonStandardInstalls
-
     PostConfigurations
+    FixXorg
 
     zenity --info --text="Environment succesfully configured. Please restart \
 gnome terminal to take effect"

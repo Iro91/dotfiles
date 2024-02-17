@@ -109,10 +109,11 @@ function fe() {
 function fcd() {
     local hits=""
     if [ $# -ne 0 ]; then
-        hits="$(find . -type d -iname "*$1*" | sort | uniq)"
+        hits="$(find . ! -path "*$1*" | sort | uniq)"
     else
-        hits="$(find . -type d | fzf )"
+        hits="$(find . ! -path '*/.git/*' | fzf )"
     fi
+    hits="$(dirname "$hits")"
     [ -n "$hits" ] && { cd "$hits" || false; }
 }
 
@@ -261,7 +262,7 @@ fi
 # ----------------------------------------------------------------------------
 alias ep='e $HOME/.bashrc'
 alias ev='e $HOME/.vimrc'
-alias dot='cd $HOME/dev/dotfiles/home/'
+alias dot='cd $HOME/dev/dotfiles/'
 alias nvc='cd $HOME/dev/dotfiles/home/.config/nvim'
 
 # ----------------------------------------------------------------------------

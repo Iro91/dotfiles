@@ -17,7 +17,7 @@ set $mod Mod1
 #font pango:monospace 8
 font pango:FiraMono Nerd Font Mono 15px
 gaps inner 10px
-gaps outer 5px
+gaps outer 15px
 for_window [class="^.*"] border pixel 2
                           # class                 border  backgr. text    indicator child_border
 for_window [class="^.*"] client.focused          #77dd77 #285577 #ffffff #2e9ef4   #285577
@@ -189,7 +189,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 exec_always --no-startup-id ~/.i3/resolution.sh
-exec_always --no-startup-id feh --bg-scale ~/.config/wallpapers/aurora.jpg
+exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper/aurora.jpg
 exec_always --no-startup-id picom
 #exec_always --no-startup-id ~/.config/polybar/launch.sh
 #exec_always --no-startup-id polybar

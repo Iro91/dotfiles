@@ -3,8 +3,7 @@ bat
 git
 feh
 htop
-# i3 is installed via setup.sh to make sure we can get gaps
-#i3
+kitty
 make
 meld
 nitrogen
@@ -17,4 +16,5 @@ ssh
 stow
 tmux
 vim
+xclip
 xterm
