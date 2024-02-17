@@ -1,5 +1,6 @@
 # Ubuntu packages
 bat
+calc
 git
 feh
 htop
@@ -11,6 +12,7 @@ picom
 plocate
 polybar
 rename
+rofi
 shellcheck
 ssh
 stow
