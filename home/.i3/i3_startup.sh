@@ -23,18 +23,27 @@ EOF
 #-------------------------------------------------------------------------------
 function Main() {
     [[ $VERBOSE == "true" ]] && set -x
-
-    sleep 1
-    # Web browser for fun stuff
-    i3-msg "workspace 1; exec firefox"
-    # Web browser for work resarch
-     i3-msg "workspace 2; exec firefox"
-    # Open up a terminal
-    i3-msg "workspace 3; exec i3-sensible-terminal"
+    KillWindows
 
     # The below are work specific and may or may not be on a given system
+    SpawnApp 1 firefox
+    SpawnApp 2 firefox
+    SpawnApp 3 kitty
+
     SpawnApp 4 slack
     SpawnApp 5 zoom
+    SpawnApp 0 spotify
+}
+
+function KillWindows() {
+    # List all windows
+    windows=$(i3-msg -t get_tree | jq '.. | (.nodes? // empty)[] | select(.window!=null) | .id')
+
+    # Close all windows
+    for win in $windows; do
+        i3-msg "[con_id=$win]" kill
+        sleep 1
+    done
 }
 
 function SpawnApp() {
@@ -43,6 +52,7 @@ function SpawnApp() {
     if command -v "$app" &> /dev/null; then
         i3-msg "workspace $ws; exec $app"
     fi
+    sleep 1
 }
 
 #-------------------------------------------------------------------------------

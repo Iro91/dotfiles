@@ -78,6 +78,7 @@ alias 3.='cd ../../../ '
 alias path='echo $PATH'
 alias rp='. $HOME/.bashrc'
 alias cat='bat'
+alias clippy='xclip -f -selection clipboard'
 
 # cd and show me directories
 function cd() { builtin cd "$@" && lsd; }
@@ -184,6 +185,56 @@ function t()
     xterm -fa mono:size=12 -bg black $args & disown
 }
 
+# Find and jump to target
+# 
+# Does a dirty search for a filename that matches the input expression
+# If a matching file is found we present a list of matching directories that
+# the user can select and then cd into
+function fj(){
+    if [ $# -ne 1 ]; then
+        echo "ERROR: Single target required: $@" >&2
+        return 1
+    fi
+
+    # Find matches and store them in an array
+    mapfile -t matches < <(find . -iname "*$1*" | sort)
+    if [ ${#matches[@]} -eq 0 ]; then
+        echo "ERROR: No targets found" >&2
+        return 0
+    fi
+
+    for match in ${matches[@]}; do
+        echo $match
+    done
+
+    # Get the unique directories of the found files
+    mapfile -t dir_list < <(for match in "${matches[@]}"; do dirname "$(realpath "$match")"; done | sort | uniq)
+
+    local count=0
+    for target in ${dir_list[@]}; do
+        echo "[$count] $target"
+        count=$((count + 1))
+    done
+
+    # If we only have one entry jump immediately to the target
+    if [ ${#dir_list[@]} -eq 1 ]; then
+        echo "jmp ${dir_list[0]}"
+        cd ${dir_list[0]}
+        return 0
+    fi
+
+    read -p "Select target: " selected
+
+    # Validate the input and display the corresponding entry
+    if [[ $selected =~ ^[0-9]+$ ]] && [ $selected -ge 0 ] && [ $selected -lt $count ]; then
+        echo "jmp $selected: ${dir_list[$selected]}"
+        cd ${dir_list[$selected]}
+    else
+        echo "ERROR: Invalid target: $selected" >&2
+        return 1
+    fi
+}
+
 # Git search
 function gits(){
     git branch | fzf | tr -d ' '
@@ -231,10 +282,10 @@ fi
 # 1. Check that we are intearactive
 # 2. That we have tmux installed
 # 3. That we are not in a live tmux session
-if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
-    if tmux has-session -t "main" &> /dev/null; then
-        exec tmux a -t "main"
-    else
-        exec tmux new -s "main"
-    fi
-fi
+#if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
+#    if tmux has-session -t "main" &> /dev/null; then
+#        exec tmux a -t "main"
+#    else
+#        exec tmux new -s "main"
+#    fi
+#fi

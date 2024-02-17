@@ -126,6 +126,19 @@ function NonStandardInstalls() {
         popd
     fi
 
+    # Install i3 with the gaps
+    if ! command -v i3 &> /dev/null; then
+        local link="http://ftp.us.debian.org/debian/pool/main/i/i3-wm/i3-wm_4.23-1_amd64.deb"
+        local pkg="/tmp/i3-wm.deb"
+        curl -o "$pkg" "$link"
+        dpkg -i "$pkg"
+
+        link="http://ftp.us.debian.org/debian/pool/main/i/i3-wm/i3_4.23-1_amd64.deb"
+        pkg="/tmp/i3.deb"
+        curl -o "$pkg" "$link"
+        dpkg -i "$pkg"
+    fi
+
 }
 
 # List of functions that come after our profile is in place. These might 

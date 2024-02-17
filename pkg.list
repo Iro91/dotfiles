@@ -1,11 +1,16 @@
 # Ubuntu packages
 bat
 git
+feh
 htop
-i3
+# i3 is installed via setup.sh to make sure we can get gaps
+#i3
 make
 meld
+nitrogen
+picom
 plocate
+polybar
 rename
 shellcheck
 ssh
