@@ -189,7 +189,7 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 exec_always --no-startup-id ~/.i3/resolution.sh
-exec_always --no-startup-id feh --bg-scale ~/dev/dotfiles/home/aurora.jpg
+exec_always --no-startup-id feh --bg-scale ~/.config/wallpapers/aurora.jpg
 exec_always --no-startup-id picom
 #exec_always --no-startup-id ~/.config/polybar/launch.sh
 #exec_always --no-startup-id polybar
