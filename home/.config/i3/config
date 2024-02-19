@@ -17,7 +17,6 @@ set $mod Mod1
 #font pango:monospace 8
 font pango:FiraMono Nerd Font Mono 15px
 gaps inner 15px
-gaps outer 15px
 for_window [class="^.*"] border pixel 3
 
 # class                 border  backgr. text    indicator child_border
@@ -59,6 +58,8 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+bindsym XF86MonBrightnessUp exec ~/.config/i3/brightness.sh -u
+bindsym XF86MonBrightnessDown exec ~/.config/i3/brightness.sh -d
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
