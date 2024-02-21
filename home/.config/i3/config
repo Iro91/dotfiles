@@ -23,7 +23,7 @@ for_window [class="^.*"] border pixel 3
 
 # class                 border  backgr. text    indicator child_border
 #client.focused          #4c7899 #285577 #ffffff #139372   #139372
-client.focused          #4c7899 #285577 #ffffff #86e1fc   #86e1fc
+client.focused          #4c7899 #285577 #ffffff #7aa2f7   #7aa2f7
 #client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
 #client.unfocused        #333333 #222222 #888888 #292d2e   #222222
 #client.urgent           #2f343a #900000 #ffffff #900000   #900000
@@ -207,7 +207,7 @@ bindsym $mod+r mode "resize"
 #exec_always --no-startup-id ~/.config/i3/resolution.sh
 exec_always --no-startup-id feh --bg-scale ~/.config/wallpaper/nebula.jpg
 exec_always --no-startup-id picom --experimental-backends
-exec_always --no-startup-id polybar -r bar
+exec_always --no-startup-id polybar -r bar -c ~/.config/polybar/config.ini
 #exec_always --no-startup-id ~/.config/polybar/launch.sh --hack
 #exec_always --no-startup-id ~/.config/polybar/launch.sh --cuts
 # Start i3bar to display a workspace bar (plus the system information i3status
