@@ -1,10 +1,10 @@
 #!/bin/bash -e
 
 #-------------------------------------------------------------------------------
-VERBOSE="false"
-LEFT_MONITOR=""
-MAIN_MONITOR=""
-RIGHT_MONITOR=""
+VERBOSE="true"
+SLEEP_TIME=.5
+THIS_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
+source "$THIS_DIR/monitor_detect.sh"
 
 #-------------------------------------------------------------------------------
 function Usage() {
@@ -26,13 +26,13 @@ function Main() {
     KillWindows
 
     # The below are work specific and may or may not be on a given system
-    SpawnApp 1 firefox
-    SpawnApp 2 firefox
-    SpawnApp 3 kitty
+    DetectMonitors
+    SpawnApp 1 firefox "$MAIN_MONITOR"
+    SpawnApp 2 kitty "$MAIN_MONITOR"
 
-    SpawnApp 4 slack
-    SpawnApp 5 zoom
-    SpawnApp 0 spotify
+    SpawnApp 3 slack "$RIGHT_MONITOR"
+    SpawnApp 4 zoom "$RIGHT_MONITOR"
+    SpawnApp 0 spotify "$RIGHT_MONITOR"
 }
 
 function KillWindows() {
@@ -42,30 +42,20 @@ function KillWindows() {
     # Close all windows
     for win in $windows; do
         i3-msg "[con_id=$win]" kill
-        sleep 1
+        sleep "$SLEEP_TIME"
     done
 }
 
 function SpawnApp() {
     local ws=$1
     local app=$2
+    local screen=$3
     if command -v "$app" &> /dev/null; then
         i3-msg "workspace $ws; exec $app"
+        i3-msg "workspace $ws, move workspace to output$screen"
     fi
-    sleep 1
+    sleep "$SLEEP_TIME"
 }
-
-#-------------------------------------------------------------------------------
-#function DetectMinitors() {
-#    local monitors="1"
-#    monitors="$(xrandr | grep -wc "connected")"
-#    if [ "$monitors" -eq 3 ]; then
-#        echo "There are three monitors"
-#    elif [ "$monitors" -eq 2 ]; then
-#        echo "There are two monitors"
-#    else
-#    fi
-#}
 
 #-------------------------------------------------------------------------------
 while getopts "hv" opt; do
@@ -81,5 +71,5 @@ done
 shift $((OPTIND - 1))
 
 #-------------------------------------------------------------------------------
-Main "${@}"
+Main "${@}" &> /tmp/restart.txt
 
