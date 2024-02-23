@@ -20,7 +20,19 @@ EOF
 #-------------------------------------------------------------------------------
 function Main() {
     [[ $VERBOSE == "true" ]] && set -x
-    ./launch.sh -v
+    if pgrep -u $UID -x polybar &> /dev/null; then
+        killall -q polybar
+    fi
+
+    # Wait until the processes have been shut down
+    while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+
+    for screen in $(xrandr --query | grep -w "connected" | cut -d" " -f1); do
+        export MONITOR="$screen"
+        polybar -r bar -c ~/.config/polybar/config.ini &
+    done
+
+
 }
 
 #-------------------------------------------------------------------------------

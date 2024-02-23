@@ -23,14 +23,15 @@ EOF
 #-------------------------------------------------------------------------------
 function Main() {
     [[ $VERBOSE == "true" ]] && set -x
-    KillWindows
+    #KillWindows
 
     # The below are work specific and may or may not be on a given system
     DetectMonitors
     SpawnApp 1 firefox "$MAIN_MONITOR"
     SpawnApp 2 kitty "$MAIN_MONITOR"
+    SetFloating 2
 
-    SpawnApp 3 slack "$RIGHT_MONITOR"
+    SpawnApp 3 slack "$LEFT_MONITOR"
     SpawnApp 4 zoom "$RIGHT_MONITOR"
     SpawnApp 0 spotify "$RIGHT_MONITOR"
 }
@@ -51,10 +52,17 @@ function SpawnApp() {
     local app=$2
     local screen=$3
     if command -v "$app" &> /dev/null; then
-        i3-msg "workspace $ws; exec $app"
-        i3-msg "workspace $ws, move workspace to output$screen"
+        if ! pgrep -i "$app" &> /dev/null; then
+            i3-msg "workspace $ws; exec $app"
+        fi
+        i3-msg "workspace $ws, move workspace to output $screen"
     fi
-    sleep "$SLEEP_TIME"
+    sleep "1"
+}
+
+function SetFloating() {
+    local ws=$1
+    i3-msg "workspace $ws; floating enable"
 }
 
 #-------------------------------------------------------------------------------
