@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash -ex
 
 #-------------------------------------------------------------------------------
 VERBOSE="false"
@@ -32,21 +32,6 @@ DESCRIPTION
     -l  : Loop, starts this process as a persistent service
 EOF
     exit 0
-}
-
-#-------------------------------------------------------------------------------
-function Main() {
-    [[ $VERBOSE == "true" ]] && set -x
-
-    if [[ "$LOOP" == false ]]; then
-        DetectMonitors
-        return 0
-    fi
-
-    while true; do
-        UpdateResolution
-        sleep 10
-    done
 }
 
 #-------------------------------------------------------------------------------
@@ -128,5 +113,14 @@ done
 shift $((OPTIND - 1))
 
 #-------------------------------------------------------------------------------
-Main "${@}"
+[[ $VERBOSE == "true" ]] && set -x
+
+if [[ "$LOOP" == false ]]; then
+    DetectMonitors
+else
+    while true; do
+        UpdateResolution
+        sleep 10
+    done
+fi
 

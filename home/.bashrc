@@ -283,11 +283,11 @@ fi
 # 1. Check that we are intearactive
 # 2. That we have tmux installed
 # 3. That we are not in a live tmux session
-if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
-    exec tmux
-    #if tmux has-session -t "main" &> /dev/null; then
-    #    exec tmux a -t "main"
-    #else
-    #    exec tmux new -s "main"
-    #fi
-fi
+#if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
+#    exec tmux
+#    #if tmux has-session -t "main" &> /dev/null; then
+#    #    exec tmux a -t "main"
+#    #else
+#    #    exec tmux new -s "main"
+#    #fi
+#fi

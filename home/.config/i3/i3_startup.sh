@@ -4,7 +4,6 @@
 VERBOSE="true"
 SLEEP_TIME=.5
 THIS_DIR="$( cd "$(dirname "$0")" ; pwd -P )"
-source "$THIS_DIR/monitor_detect.sh"
 
 #-------------------------------------------------------------------------------
 function Usage() {
@@ -23,17 +22,17 @@ EOF
 #-------------------------------------------------------------------------------
 function Main() {
     [[ $VERBOSE == "true" ]] && set -x
+    source "$THIS_DIR/monitor_detect.sh"
     #KillWindows
 
     # The below are work specific and may or may not be on a given system
-    DetectMonitors
-    SpawnApp 1 firefox "$MAIN_MONITOR"
-    SpawnApp 2 kitty "$MAIN_MONITOR"
+    SpawnApp 1 firefox "$CENT_MONITOR"
+    SpawnApp 2 kitty "$CENT_MONITOR"
     SetFloating 2
 
-    SpawnApp 3 slack "$LEFT_MONITOR"
-    SpawnApp 4 zoom "$RIGHT_MONITOR"
-    SpawnApp 0 spotify "$RIGHT_MONITOR"
+    SpawnApp 9 zoom "$RIGHT_MONITOR"
+    SpawnApp 9 spotify "$RIGHT_MONITOR"
+    SpawnApp 0 slack "$RIGHT_MONITOR"
 }
 
 function KillWindows() {
@@ -57,7 +56,7 @@ function SpawnApp() {
         fi
         i3-msg "workspace $ws, move workspace to output $screen"
     fi
-    sleep "1"
+    sleep "2"
 }
 
 function SetFloating() {
@@ -79,5 +78,5 @@ done
 shift $((OPTIND - 1))
 
 #-------------------------------------------------------------------------------
-Main "${@}" &> /tmp/restart.txt
+Main "${@}"
 
