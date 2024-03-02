@@ -1,8 +1,9 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 #-------------------------------------------------------------------------------
 VERBOSE="false"
 LOOP="false"
+FORCE="false"
 
 WORK_SETUP="DP-0.1 DP-0.3 eDP-1-1"
 HOME_SETUP="DP-0 eDP-1-1 HDMI-0"
@@ -17,7 +18,7 @@ CENT_RESOLUTION=""
 RIGHT_RESOLUTION=""
 
 MONITORS=""
-LAST_SETUP="/tmp/monitor_setup.txt"
+LAST_DETECTED="/tmp/$(basename "$0" .sh)"
 
 #-------------------------------------------------------------------------------
 function Usage() {
@@ -30,6 +31,7 @@ DESCRIPTION
     -h  : Print this usage
     -v  : Enable verbosity
     -l  : Loop, starts this process as a persistent service
+    -f  : Force the monitor resolution to reload
 EOF
     exit 0
 }
@@ -37,6 +39,7 @@ EOF
 #-------------------------------------------------------------------------------
 function DetectMonitors() {
     MONITORS="$(xrandr | grep -w connected | cut -d" "  -f 1 | sort | xargs)"
+    xrandr | grep -w connected | sort > "$LAST_DETECTED"
 
     # My laptop is always on the right hand side
     CENT_MONITOR="$LAPTOP"
@@ -72,18 +75,23 @@ function DetectMonitors() {
     echo "Right: $RIGHT_RESOLUTION"
 }
 
+function ResolutionMonitor() {
+    local deltaCheck="${LAST_DETECTED}.delta"
+    while true; do
+        if [[ -f "$LAST_DETECTED" ]]; then
+            cp -p "$LAST_DETECTED" "$deltaCheck"
+        fi
+        DetectMonitors
+
+        if ! diff "$deltaCheck" "$LAST_DETECTED"; then
+            UpdateResolution
+        fi
+
+        sleep 10
+    done
+}
+
 function UpdateResolution() {
-    local lastSetup=""
-    if [[ -f "$LAST_SETUP" ]]; then
-        lastSetup="$(cat $LAST_SETUP)"
-    fi
-    DetectMonitors
-
-    if [[ "$lastSetup" == "$MONITORS" ]]; then
-        echo "Monitor setup matches last, nothing to do"
-        return 0
-    fi
-
     # We just have the laptop
     if [[ "$MONITORS" == "$LAPTOP" ]]; then
         xrandr $CENT_RESOLUTION
@@ -93,17 +101,15 @@ function UpdateResolution() {
         xrandr $RIGHT_RESOLUTION
     fi
     i3-msg reload
-
-    # Cache last setup
-    echo "$MONITORS" > "$LAST_SETUP"
 }
 
 #-------------------------------------------------------------------------------
-while getopts "hvl" opt; do
+while getopts "hvlf" opt; do
     case $opt in
     h) Usage ;;
     v) VERBOSE="true" ;;
     l) LOOP="true" ;;
+    f) FORCE="true" ;;
     \?)
         echo "Invalid option: -$OPTARG" >&2
         exit 1
@@ -115,12 +121,12 @@ shift $((OPTIND - 1))
 #-------------------------------------------------------------------------------
 [[ $VERBOSE == "true" ]] && set -x
 
-if [[ "$LOOP" == false ]]; then
-    DetectMonitors
-else
-    while true; do
-        UpdateResolution
-        sleep 10
-    done
-fi
+DetectMonitors
 
+# Loop forever monitoring for output changes
+if [[ "$LOOP" == "true" ]]; then
+    ResolutionMonitor
+# Force the displays to update
+elif [[ "$FORCE" == "true" ]]; then
+    UpdateResolution
+fi

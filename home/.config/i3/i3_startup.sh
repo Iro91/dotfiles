@@ -26,13 +26,14 @@ function Main() {
     #KillWindows
 
     # The below are work specific and may or may not be on a given system
+    SpawnApp 0 slack "$CENT_MONITOR"
     SpawnApp 1 firefox "$CENT_MONITOR"
     SpawnApp 2 kitty "$CENT_MONITOR"
-    SetFloating 2
+    SpawnApp 3 kitty "$CENT_MONITOR"
+    #SetFloating 2
 
-    SpawnApp 9 zoom "$RIGHT_MONITOR"
-    SpawnApp 9 spotify "$RIGHT_MONITOR"
-    SpawnApp 0 slack "$RIGHT_MONITOR"
+    SpawnApp 8 zoom "$CENT_MONITOR"
+    SpawnApp 9 spotify "$CENT_MONITOR"
 }
 
 function KillWindows() {

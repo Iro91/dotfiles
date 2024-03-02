@@ -73,8 +73,9 @@ alias lm='ls -tr | tail -n 1'
 alias lsd='/bin/ls -d --color */ 2>/dev/null || true'
 alias grep='grep --color=auto'
 alias ..='cd ../'
-alias 2.='cd ../../ '
-alias 3.='cd ../../../ '
+alias 2.='cd ../../'
+alias 3.='cd ../../../'
+alias 4.='cd ../../../../'
 alias path='echo $PATH'
 alias rp='. $HOME/.bashrc'
 alias cat='bat'
@@ -90,6 +91,19 @@ function ff() {
         hits="$(find . -iname "*$1*" | sort | uniq)"
     else
         hits="$(find . -type f -iname "*" | fzf --preview 'bat {}')"
+    fi
+
+    if [ -n "$hits" ]; then
+        echo "$hits" | xclip -f -selection clipboard
+    fi
+}
+
+function fh() {
+    local hits=""
+    if [ $# -ne 0 ]; then
+        hits="$(find . -maxdepth 1 -iname "*$1*" | sort | uniq)"
+    else
+        hits="$(find . -maxdepth 1 -type f -iname "*" | fzf --preview 'bat {}')"
     fi
 
     if [ -n "$hits" ]; then
@@ -283,11 +297,8 @@ fi
 # 1. Check that we are intearactive
 # 2. That we have tmux installed
 # 3. That we are not in a live tmux session
-#if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
-#    exec tmux
-#    #if tmux has-session -t "main" &> /dev/null; then
-#    #    exec tmux a -t "main"
-#    #else
-#    #    exec tmux new -s "main"
-#    #fi
-#fi
+if [[ $- = *i* ]] && [[ $(which tmux) ]] && [[ -z "$TMUX" ]] && [[ ! $TERM_PROGRAM = vscode ]]; then
+    if ! tmux ls &> /dev/null; then
+        exec tmux new -s "main"
+    fi
+fi
